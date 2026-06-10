@@ -19,9 +19,6 @@ add_library(hardware_service SHARED
 target_link_libraries(hardware_service
     android
     log
-    EGL
-    GLESv3
-    vulkan
 )
 
 # Include directories
