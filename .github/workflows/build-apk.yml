@@ -1,10 +1,8 @@
-name: Build AETHER MIND APK
+name: Build NEXUS ULTRA APK
 
 on:
   push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
@@ -22,33 +20,52 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
+    - name: Install Android SDK
+      run: |
+        # Install command-line tools
+        wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+        unzip -q cmdline-tools.zip -d android-sdk
+        mkdir -p android-sdk/cmdline-tools/latest
+        mv android-sdk/cmdline-tools/* android-sdk/cmdline-tools/latest/ 2>/dev/null || true
+        mv android-sdk/cmdline-tools/latest/bin android-sdk/cmdline-tools/latest/lib android-sdk/cmdline-tools/latest/ 2>/dev/null || true
+        
+        # Set environment
+        export ANDROID_HOME=$PWD/android-sdk
+        echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
+        echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_PATH
+        
+        # Accept licenses
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+        
+        # Install required SDK components
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+          "platforms;android-34" \
+          "build-tools;34.0.0" \
+          "ndk;25.2.9519653" \
+          "cmake;3.22.1" || echo "SDK install may have had issues"
+        
+        echo "✅ Android SDK installed"
+
     - name: Make gradlew executable
       run: chmod +x android/gradlew
 
     - name: Build APK with Gradle
       run: |
         cd android
-        ./gradlew assembleDebug --no-daemon
+        export ANDROID_HOME=${{ env.ANDROID_HOME }}
+        ./gradlew assembleDebug --no-daemon --stacktrace
 
     - name: Find APK
       run: |
-        cd android
-        find . -name "*.apk" -type f
-        ls -la build/outputs/apk/debug/ 2>/dev/null || echo "No debug dir"
-        ls -la build/outputs/apk/ 2>/dev/null || echo "No outputs/apk dir"
-        ls -la build/ 2>/dev/null || echo "No build dir"
+        echo "Looking for APK..."
+        find android -name "*.apk" -type f 2>/dev/null || echo "No APK found"
+        ls -la android/build/outputs/ 2>/dev/null
+        ls -la android/app/build/outputs/ 2>/dev/null
 
-    - name: Upload APK Artifact
+    - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: aether-mind-apk
-        path: android/build/outputs/apk/debug/*.apk
+        name: nexus-ultra-apk
+        path: |
+          android/**/outputs/apk/**/*.apk
         retention-days: 30
-        if-no-files-found: error
-
-    - name: Create Release (on tag)
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: softprops/action-gh-release@v1
-      with:
-        files: android/app/build/outputs/apk/debug/app-debug.apk
-        generate_release_notes: true
