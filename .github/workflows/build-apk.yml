@@ -26,25 +26,30 @@ jobs:
         wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
         unzip -q cmdline-tools.zip -d android-sdk
         mkdir -p android-sdk/cmdline-tools/latest
-        mv android-sdk/cmdline-tools/* android-sdk/cmdline-tools/latest/ 2>/dev/null || true
-        mv android-sdk/cmdline-tools/latest/bin android-sdk/cmdline-tools/latest/lib android-sdk/cmdline-tools/latest/ 2>/dev/null || true
+        # Move contents properly
+        mv android-sdk/cmdline-tools/!(*latest*) android-sdk/cmdline-tools/latest/ 2>/dev/null || true
         
         # Set environment
         export ANDROID_HOME=$PWD/android-sdk
         echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
+        
+        # Add to PATH
         echo "$ANDROID_HOME/cmdline-tools/latest/bin" >> $GITHUB_PATH
+        echo "$ANDROID_HOME/platform-tools" >> $GITHUB_PATH
+        
+        # Create local.properties for Gradle
+        echo "sdk.dir=$ANDROID_HOME" > android/local.properties
         
         # Accept licenses
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || true
         
         # Install required SDK components
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install \
           "platforms;android-34" \
           "build-tools;34.0.0" \
-          "ndk;25.2.9519653" \
-          "cmake;3.22.1" || echo "SDK install may have had issues"
+          "ndk;25.2.9519653" 2>&1 | tail -5 || echo "SDK install had issues"
         
-        echo "✅ Android SDK installed"
+        echo "✅ Android SDK installed at $ANDROID_HOME"
 
     - name: Make gradlew executable
       run: chmod +x android/gradlew
