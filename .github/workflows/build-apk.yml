@@ -76,6 +76,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: nexus-ultra-apk
-        path: |
-          android/**/outputs/apk/**/*.apk
+        path: android/build/outputs/apk/**/*.apk
         retention-days: 30
