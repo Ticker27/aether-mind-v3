@@ -1,0 +1,7 @@
+{
+  "neural_oracle": "qwen3-235b-a22b-thinking-2507",
+  "physics_engine": "qwen3-235b-a22b-thinking-2507",
+  "frame_capture": "qwen-image-2.0",
+  "stealth_layer": "qwen-coder-plus",
+  "fast_inference": "deepseek-v4-flash"
+}
