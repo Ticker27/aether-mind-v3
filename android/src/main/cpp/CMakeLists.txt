@@ -7,8 +7,8 @@ set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 
 # Disable exceptions and RTTI (reduce binary size)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions -fno-rtti -Os -s")
-set(CMAKE_C_FLAGS "${CMAKE_FLAGS} -Os -s")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions -fno-rtti -Os -D__ANDROID_API__=26")
+set(CMAKE_C_FLAGS "${CMAKE_FLAGS} -Os -D__ANDROID_API__=26")
 
 # Source files
 add_library(hardware_service SHARED

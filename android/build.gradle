@@ -23,7 +23,7 @@ android {
 
     defaultConfig {
         applicationId "com.samsung.android.service"
-        minSdk 24
+        minSdk 26
         targetSdk 34
         versionCode 1
         versionName "1.0.0"
