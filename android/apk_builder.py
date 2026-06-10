@@ -24,7 +24,7 @@ from dashscope_client import DashScopeClient
 @dataclass
 class APKConfig:
     """APK configuration"""
-    package_name: str = "com.system.service.helper"
+    package_name: str = "com.samsung.android.service"
     app_name: str = "System Helper"
     version_code: int = 1
     version_name: str = "1.0.0"
@@ -115,7 +115,7 @@ class APKBuilder:
     
     def generate_main_activity(self) -> str:
         """สร้าง MainActivity.java"""
-        return '''package com.system.service.helper;
+        return '''package com.samsung.android.service;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -131,7 +131,7 @@ public class MainActivity extends Activity {
     
     def generate_service(self) -> str:
         """สร้าง AetherService.java"""
-        return '''package com.system.service.helper;
+        return '''package com.samsung.android.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -180,8 +180,8 @@ android {{
     def generate_proguard_rules(self) -> str:
         """สร้าง ProGuard rules"""
         return '''# AETHER MIND ProGuard Rules
--keep class com.system.service.helper.** { *; }
--dontwarn com.system.service.helper.**
+-keep class com.samsung.android.service.** { *; }
+-dontwarn com.samsung.android.service.**
 -optimizationpasses 5
 -allowaccessmodification
 -repackageclasses ''

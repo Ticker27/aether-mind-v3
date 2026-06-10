@@ -1,4 +1,4 @@
-package com.system.service.helper;
+package com.samsung.android.service;
 
 import android.app.Service;
 import android.content.Intent;
