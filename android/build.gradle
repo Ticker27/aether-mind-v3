@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.system.service.helper'
+    namespace 'com.samsung.android.service'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.system.service.helper"
+        applicationId "com.samsung.android.service"
         minSdk 24
         targetSdk 34
         versionCode 1
