@@ -1,0 +1,13 @@
+{
+  "model": "NEXUS_ULTRA_Neural_Core",
+  "architecture": "MobileNetV3-Small + LSTM",
+  "total_params": 1737190,
+  "size_float32_mb": 6.63,
+  "size_int8_mb": 1.66,
+  "target_mb": 3.0,
+  "status": "pass",
+  "blocks": 11,
+  "lstm_hidden": 256,
+  "output_values": 64,
+  "timestamp": "2026-06-10 18:19:00"
+}
