@@ -42,11 +42,11 @@ jobs:
         # Create local.properties for Gradle
         echo "sdk.dir=$ANDROID_HOME" > android/local.properties
         
-        # Accept licenses and install SDK
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || true
-        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-34" "build-tools;34.0.0" 2>&1 | tail -5
+        # Accept ALL licenses (avoids the 'not accepted' error)
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses 2>&1 || true
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;33.0.1" "build-tools;34.0.0" 2>&1 | tail -10
         
-        echo "✅ Android SDK installed at $ANDROID_HOME"
+        echo "✅ Android SDK ready at $ANDROID_HOME"
 
     - name: Make gradlew executable
       run: chmod +x android/gradlew
