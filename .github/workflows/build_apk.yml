@@ -21,19 +21,19 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Install NDK
-        run: sdkmanager "ndk;26.1.10909125"
-
-      - name: Setup CMake
-        run: sdkmanager "cmake;3.22.1"
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: |
+          yes | $ANDROID_HOME/tools/bin/sdkmanager "ndk;26.1.10909125" >/dev/null 2>&1 || true
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;26.1.10909125" >/dev/null 2>&1 || true
 
       - name: Build APK
-        run: ./gradlew assembleDebug --no-daemon --console=plain
+        run: |
+          cd Aether
+          chmod +x gradlew
+          export ANDROID_NDK_HOME="$ANDROID_HOME/ndk/26.1.10909125"
+          ./gradlew assembleDebug --no-daemon --console=plain
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Aether-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: Aether/app/build/outputs/apk/debug/app-debug.apk
