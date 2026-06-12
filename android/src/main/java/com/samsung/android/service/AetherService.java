@@ -118,7 +118,7 @@ public class AetherService extends Service {
         float startX = 500; //- mapped from game state
         float startY = 800;
         float endX = 500 + (float)(Math.cos(Math.toRadians(angle)) * power * 100);
-        float endY = 800 + (float)(Math.sin(Math.toRadians(Math.toRadians(angle))) * power * 100);
+        float endY = 800 + (float)(Math.sin(Math.toRadians(angle)) * power * 100);
         
         // Call AccessibilityService for humanized touch
         AetherAccessibilityService accService = (AetherAccessibilityService) getSystemService(ACCESSIBILITY_SERVICE);
