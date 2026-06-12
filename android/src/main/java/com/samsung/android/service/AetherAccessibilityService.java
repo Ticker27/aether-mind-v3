@@ -78,19 +78,26 @@ public class AetherAccessibilityService extends AccessibilityService {
      * @param duration Duration in ms
      */
     public void performSwipe(float x1, float y1, float x2, float y2, int duration) {
-        Point startPoint = new Point((int)x1, (int)y1);
-        Point endPoint = new Point((int)x2, (int)y2);
+        // Humanization: Add slight random jitter to coordinates and duration
+        float jitterX1 = x1 + (float)(Math.random() * 4 - 2);
+        float jitterY1 = y1 + (float)(Math.random() * 4 - 2);
+        float jitterX2 = x2 + (float)(Math.random() * 4 - 2);
+        float jitterY2 = y2 + (float)(Math.random() * 4 - 2);
+        int jitterDuration = duration + (int)(Math.random() * 20 - 10);
+
+        Point startPoint = new Point((int)jitterX1, (int)jitterY1);
+        Point endPoint = new Point((int)jitterX2, (int)jitterY2);
         
         GestureDescription gesture = new GestureDescription.Builder()
             .addStroke(new GestureDescription.StrokeDescription(
                 createPath(startPoint, endPoint),
                 0,
-                duration
+                Math.max(10, jitterDuration)
             ))
             .build();
         
         dispatchGesture(gesture, null, null);
-        Log.d(TAG, "Swipe performed from (" + x1 + ", " + y1 + ") to (" + x2 + ", " + y2 + ")");
+        Log.d(TAG, "Humanized swipe: (" + jitterX1 + "," + jitterY1 + ") -> (" + jitterX2 + "," + jitterY2 + ") dur=" + jitterDuration);
     }
     
     /**

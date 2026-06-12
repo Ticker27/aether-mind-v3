@@ -5,6 +5,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.1.4'
+        classpath 'com.chaquo.python:gradle:15.0.1'
     }
 }
 
@@ -16,6 +17,7 @@ allprojects {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.chaquo.python'
 
 android {
     namespace 'com.samsung.android.service'
@@ -23,10 +25,22 @@ android {
 
     defaultConfig {
         applicationId "com.samsung.android.service"
-        minSdk 26
+        minSdk 24  // Changed to 24 for broader compatibility
         targetSdk 34
         versionCode 1
         versionName "1.0.0"
+
+        python {
+            buildPython "/usr/bin/python3"
+            pip {
+                install "numpy==1.26.4"
+                install "scipy==1.13.0"
+                install "scikit-learn==1.4.2"
+                install "matplotlib==3.9.0"
+                install "imageio==2.37.3"
+                # Add other Python packages required by AETHER SHOT here
+            }
+        }
     }
 
     buildTypes {
@@ -66,4 +80,6 @@ dependencies {
             because 'Avoid duplicate class conflicts with kotlin-stdlib'
         }
     }
+    implementation 'com.chaquo.python:runtime-stdlib:15.0.1'
+    implementation 'com.chaquo.python:runtime:15.0.1'
 }
