@@ -1,0 +1,29 @@
+version: 2.1
+
+orbs:
+  android: circleci/android@2.5.0
+
+workflows:
+  build-apk:
+    jobs:
+      - build
+
+jobs:
+  build:
+    executor: android/android-machine
+    steps:
+      - checkout
+      - run:
+          name: Grant execute permission
+          command: chmod +x gradlew
+      - run:
+          name: Restore Cache
+          command: |
+            ls -la $ANDROID_HOME || true
+            ls -la $ANDROID_NDK_HOME || true
+      - run:
+          name: Build APK
+          command: ./gradlew assembleDebug --no-daemon --console=plain
+      - store_artifacts:
+          path: app/build/outputs/apk/debug/app-debug.apk
+          destination: Aether-APK
