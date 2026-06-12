@@ -1,0 +1,54 @@
+name: AETHER BRAIN - Ethereal AI Processor
+
+on:
+  workflow_dispatch:
+    inputs:
+      screenshot_base64:
+        description: 'Base64 encoded screenshot from APK'
+        required: true
+      session_id:
+        description: 'Unique Session ID'
+        required: true
+
+jobs:
+  process-shot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          pip install numpy scipy scikit-learn matplotlib imageio opencv-python-headless
+
+      - name: Decode Screenshot
+        run: |
+          echo "${{ github.event.inputs.screenshot_base64 }}" | base64 -d > /tmp/screenshot.png
+
+      - name: Run AETHER SHOT AI
+        run: |
+          # เรียกใช้ aether_shot.sh หรือ Python Script โดยตรง
+          # ส่งผลลัพธ์เป็น JSON กลับไป
+          python3 -c "
+import sys, json
+# (จำลองการวิเคราะห์ภาพและคำนวณ)
+# ในความเป็นจริง จะเรียกใช้ aether_core.py
+result = {
+  'angle': 12.5,
+  'power': 7.8,
+  'spin': 'draw',
+  'confidence': 0.98
+}
+print(json.dumps(result))
+" > /tmp/ai_result.json
+
+      - name: Upload Result
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-result-${{ github.event.inputs.session_id }}
+          path: /tmp/ai_result.json
