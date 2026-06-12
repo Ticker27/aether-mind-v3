@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Billiards Vision AI</string>
+    <string name="accessibility_desc">Required for AI touch simulation in research environment. Only for authorized use.</string>
+</resources>

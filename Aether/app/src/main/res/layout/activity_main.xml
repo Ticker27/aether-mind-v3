@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#0a0a1a"
+    android:padding="32dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aether"
+        android:textSize="30sp"
+        android:textColor="#ff4444"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vision AI Research Suite"
+        android:textSize="14sp"
+        android:textColor="#888888"
+        android:layout_marginBottom="48dp" />
+
+    <TextView
+        android:id="@+id/status_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="● Idle"
+        android:textSize="20sp"
+        android:textColor="#00ff88"
+        android:layout_marginBottom="32dp" />
+
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="220dp"
+        android:layout_height="60dp"
+        android:text="Start Agent"
+        android:textSize="16sp"
+        android:backgroundTint="#ff4444"
+        android:textColor="#ffffff"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btn_stop"
+        android:layout_width="220dp"
+        android:layout_height="60dp"
+        android:text="Stop Agent"
+        android:textSize="16sp"
+        android:backgroundTint="#555555"
+        android:textColor="#ffffff"
+        android:enabled="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="v1.0.0 - Prometheus"
+        android:textSize="12sp"
+        android:textColor="#444444"
+        android:layout_marginTop="48dp" />
+</LinearLayout>
