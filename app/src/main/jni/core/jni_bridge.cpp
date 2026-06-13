@@ -1,4 +1,5 @@
-#include <jni.h><android/log.h>
+#include <jni.h>
+#include <android/log.h>
 #include "agent.h"
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO,"JNI",__VA_ARGS__)
 extern "C" {

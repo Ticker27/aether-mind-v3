@@ -1,5 +1,9 @@
 #pragma once
-#include <atomic><thread><mutex><string><cstdint>
+#include <atomic>
+#include <thread>
+#include <mutex>
+#include <string>
+#include <cstdint>
 namespace aether {
 class GhostAgent {
 public:
