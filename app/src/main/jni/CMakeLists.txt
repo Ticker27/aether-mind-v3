@@ -1,10 +1,22 @@
 cmake_minimum_required(VERSION 3.18.1)
-project("aether_agent")
+project("aether_brain")
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
-find_library(log-lib log)
-find_library(android-lib android)
-set(SOURCES core/agent.cpp core/jni_bridge.cpp)
-add_library(aether_agent SHARED ${SOURCES})
-target_include_directories(aether_agent PRIVATE ${CMAKE_SOURCE_DIR})
-target_link_libraries(aether_agent ${log-lib} ${android-lib})
+
+# Only compile existing .cpp files
+add_library(aether_brain SHARED
+    core/jni_bridge.cpp
+)
+
+# Include headers for brain (header-only library)
+target_include_directories(aether_brain PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/brain
+    ${CMAKE_CURRENT_SOURCE_DIR}/core
+)
+
+# Link Android system libraries
+target_link_libraries(aether_brain
+    log
+    android
+    jnigraphics
+)
