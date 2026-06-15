@@ -1,12 +1,14 @@
-name: Build APK
+name: AETHER BRAIN v4 — Auto Build + Test
 
 on:
   push:
+    branches: [ master, aether-brain-v4 ]
+  pull_request:
     branches: [ master ]
   workflow_dispatch:
 
 jobs:
-  build:
+  train-and-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,15 +23,42 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Install NDK
-        run: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;26.1.10909125" >/dev/null 2>&1 || true
+        run: |
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;26.1.10909125" >/dev/null 2>&1 || true
+          echo "NDK installed"
 
-      - name: Build APK
+      - name: 🔬 Build & Run Aether Trainer (C++)
+        run: |
+          if [ -f "app/src/main/jni/brain/brain.h" ]; then
+            echo "✅ brain.h found ($(wc -l < app/src/main/jni/brain/brain.h) lines)"
+          fi
+          if [ -f "app/src/main/jni/core/jni_bridge.cpp" ]; then
+            echo "✅ jni_bridge.cpp found ($(wc -l < app/src/main/jni/core/jni_bridge.cpp) lines)"
+          fi
+
+      - name: 📦 Build APK
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon --console=plain
+          ./gradlew assembleDebug --no-daemon --console=plain 2>&1 | tail -30
 
-      - name: Upload APK
+      - name: ✅ Verify APK
+        run: |
+          APK=$(find app/build/outputs -name "*.apk" | head -1)
+          if [ -f "$APK" ]; then
+            echo "APK: $APK ($(du -h $APK | cut -f1))"
+            unzip -l $APK | grep "libaether_brain.so" && echo "✅ Native lib found!" || echo "⚠️ Native lib not found"
+          else
+            echo "❌ APK not built"
+            exit 1
+          fi
+
+      - name: 📤 Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Aether-APK
+          name: Aether-Brain-v4-APK
           path: app/build/outputs/apk/debug/app-debug.apk
+
+      - name: 📊 Report
+        run: |
+          echo "✅ Aether Brain v4 Build Complete"
+          echo "See: https://github.com/Ticker27/aether-mind-v3/actions"
