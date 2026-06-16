@@ -5,6 +5,7 @@
 #include <cmath>
 #include <vector>
 #include <cfloat>
+#include <random>
 
 namespace aether {
 
